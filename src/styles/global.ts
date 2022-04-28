@@ -21,8 +21,8 @@ export default createGlobalStyle`
   }
 
   body {
-    background: ${props => props.theme.background};
     font: 400 1rem 'Poppins', sans-serif;
+    background: ${props => props.theme.background};
   }
   
   img {
@@ -40,13 +40,14 @@ export default createGlobalStyle`
   
   a {
     text-decoration: none;
+    color: inherit;
   }
   
   .container {
     width: 100%;
     margin: 0 auto;
-    max-width: 85rem;
     padding: 0 1rem;
+    max-width: 85rem;
 
     @media(max-width:1450px) {
       max-width: 70rem;
