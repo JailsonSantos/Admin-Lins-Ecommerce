@@ -30,6 +30,10 @@ export const Table = styled.table`
 
 `;
 
+export const Thead = styled.thead``;
+
+export const Tbody = styled.tbody``;
+
 export const Tr = styled.tr``;
 
 export const Th = styled.th`
@@ -66,7 +70,7 @@ export const ButtonStatus = styled.button<ButtonStatusProps>`
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
-
+  
   color: ${({ typeStatus, theme }) => typeStatus === "Aprovado" ? theme.success : typeStatus === 'Pendente' ? theme.pending : theme.declined};
   background-color: ${({ typeStatus, theme }) => typeStatus === 'Aprovado' ? theme.successLight : typeStatus === 'Pendente' ? theme.pendingLight : theme.declinedLight};
 

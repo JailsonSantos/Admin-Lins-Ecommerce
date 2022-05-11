@@ -12,19 +12,33 @@ export const NewProductTitle = styled.h2``;
 
 export const NewProductForm = styled.form`
   margin-top: 10px;
+  display: flex;
+`;
+
+export const ProductAreaItem = styled.div`
+  display: flex;
+  flex-wrap: wrap;
 `;
 
 export const NewProductItem = styled.div`
   width: 250px;
   display: flex;
+  margin: 0 20px;
   margin-bottom: 10px;
   flex-direction: column;
 `;
 
+export const ProductUploadLabel = styled.label`
+  width: 200px;
+`;
+
 export const NewProductImage = styled.img`
-  width: 300px;
-  height: 150px;
+  width: auto;
   border-radius: 5px;
+`;
+
+export const NewProductInputImage = styled.input`
+  display: none;
 `;
 
 export const NewProductLabel = styled.label`
@@ -53,10 +67,6 @@ export const NewProductInput = styled.input`
   border-bottom: 1px solid ${({ theme }) => theme.textLight};
 `;
 
-export const NewProductInputImage = styled.input`
-  display: none;
-`;
-
 export const NewProductSelect = styled.select`
   height: 40px;
   outline: none;
@@ -70,11 +80,14 @@ export const NewProductButton = styled.button`
   width: 250px;
   border: none;
   padding: 10px;
+  display: flex;
   font-size: 1rem;
   margin-top: 20px;
   transition: 0.5s;
   font-weight: 600;
   border-radius: 5px;
+  align-items: center;
+  justify-content: center;
   color: ${({ theme }) => theme.text};
   background-color: ${({ theme }) => theme.blue};
 

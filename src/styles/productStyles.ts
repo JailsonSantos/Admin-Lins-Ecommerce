@@ -108,14 +108,21 @@ export const ProductBottom = styled.div`
 
 export const ProductForm = styled.form`
   display: flex;
-  justify-content: space-between;
 `;
 
 export const ProductFormLeft = styled.div`
   display: flex;
-  flex-direction: column;
+  flex: 3;
+  flex-wrap: wrap;
 `;
 
+export const ProductUpdatedItem = styled.div`
+  width: 250px;
+  display: flex;
+  margin: 0 20px;
+  margin-bottom: 10px;
+  flex-direction: column;
+`;
 export const ProductLabel = styled.div`
   margin-bottom: 10px;
   color: ${({ theme }) => theme.textHighlight};
@@ -144,6 +151,7 @@ export const ProductOption = styled.option``;
 
 export const ProductFormRight = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: space-around;
 `;
@@ -154,8 +162,8 @@ export const ProductUpload = styled.div`
 `;
 
 export const ProductUploadImage = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 300px;
+  height: 300px;
   object-fit: cover;
   margin-right: 20px;
   border-radius: 5px;

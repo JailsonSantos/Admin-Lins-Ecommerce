@@ -41,3 +41,33 @@
 - yarn add "@mui/system": "^5.6.3",
 - yarn add "react": "^17.0.2 || ^18.0.0",
 - yarn add "react-dom": "^17.0.2 || ^18.0.0"
+
+
+#### Instalação do Redux, Redux Toolkit e Redux persist
+- yarn add react-redux
+- yarn add @reduxjs/toolkit
+- yarn add redux-persist
+
+#### Instalação do Axios
+- yarn add axios
+
+### Componente de Loading
+- yarn add react-loading
+
+### Instalando nookies
+- yarn add nookies
+
+### Biblioteca para formatar data
+- yarn add timeago.js
+
+### Firebase configurar projeto e instalação no projeto
+- DOCUMENTAÇÂO https://firebase.google.com/docs/web/setup
+- yarn add firebase
+
+
+ID do projeto firebase
+
+admin-lins-e-commerce
+
+APELIDO DO APP
+AdminLinsEcommerce

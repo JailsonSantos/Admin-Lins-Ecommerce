@@ -41,3 +41,29 @@ export const Container = styled.div`
     }
   }
 `;
+
+export const ProductTitleContainer = styled.div`
+  display: flex;
+  margin: 0 20px;
+  padding: 0 20px;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const ProductTitle = styled.h2``;
+
+export const ProductAddButton = styled.button`
+  width: 60px;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.5s;
+  border-radius: 5px;
+  color: ${({ theme }) => theme.text};
+  background-color: ${({ theme }) => theme.successMedium};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.success}
+  }
+`;

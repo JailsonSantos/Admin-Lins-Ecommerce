@@ -9,18 +9,57 @@ import {
 } from './styles';
 
 import { ArrowDownward, ArrowUpward } from '@material-ui/icons';
+import { useEffect, useState } from 'react';
+import { userRequest } from '../../services/api';
+
+interface IncomeProps {
+  _id: number;
+  total: number;
+}
 
 function FeaturedInfo() {
+
+  const [income, setIncome] = useState<IncomeProps[]>([]);
+  const [percent, setPercent] = useState(0);
+
+  useEffect(() => {
+    const getIncome = async () => {
+      try {
+        const response = await userRequest.get("orders/income");
+        setIncome(response.data);
+
+        const lastSales = response.data[1].total * 100;
+        const firstSales = response.data[0].total - 100;
+        const totalPercent = Math.floor(lastSales / firstSales);
+
+        setPercent(totalPercent);
+
+      } catch (error: any) {
+        throw error.message;
+      }
+    }
+    getIncome();
+  }, [])
+
   return (
     <Container>
 
       <FeaturedItem>
         <FeaturedTitle>Receita</FeaturedTitle>
         <FeaturedMoneyContainer>
-          <FeaturedMoney> R$ 29.032,00 </FeaturedMoney>
-          <FeaturedMoneyRate negative>
-            - 11.4 <ArrowDownward />
-          </FeaturedMoneyRate>
+          <FeaturedMoney> R$ {income[1]?.total}</FeaturedMoney>
+
+          {percent < 0
+            ?
+            <FeaturedMoneyRate negative>
+              {percent} % <ArrowDownward />
+            </FeaturedMoneyRate>
+            :
+            <FeaturedMoneyRate>
+              {percent} % <ArrowUpward />
+            </FeaturedMoneyRate>
+          }
+
         </FeaturedMoneyContainer>
         <FeaturedSub>Compras do último mês</FeaturedSub>
       </FeaturedItem>
