@@ -34,6 +34,11 @@ export const WidgetListItem = styled.li`
   justify-content: space-between;
 `;
 
+export const WidgetPerfil = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 export const WidgetImage = styled.img`
   width: 40px;
   height: 40px;
@@ -43,6 +48,7 @@ export const WidgetImage = styled.img`
 
 export const WidgetUser = styled.div`
   display: flex;
+  margin-left: 15px;
   flex-direction: column;
 `;
 
@@ -63,6 +69,11 @@ export const WidgetButton = styled.button`
   color: ${({ theme }) => theme.textHighlight};
   background-color: ${({ theme }) => theme.buttonLight};
   transition: 0.2s;
+
+  a{ 
+    display: flex;
+    align-items: center;
+  }
 
   &:hover {
     color: ${({ theme }) => darken(0.2, theme.textHighlight)};

@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 // Styles component
 import {
@@ -13,9 +15,18 @@ import {
 } from './styles';
 
 // Icons 
-import { NotificationsNone, Language, Settings, } from '@material-ui/icons';
+import { NotificationsNone, Language, Settings, ExitToApp } from '@material-ui/icons';
+import { logout } from '../../redux/apiCalls';
 
 function Topbar() {
+
+  const { currentUser } = useSelector((state: RootState) => state.user);
+
+
+
+  const dispatch = useDispatch();
+
+
   return (
     <Container>
       <TopbarWrapper>
@@ -38,7 +49,10 @@ function Topbar() {
           <TopbarIconContainer>
             <Settings />
           </TopbarIconContainer>
-          <ImageAvatar src='https://github.com/jailsonsantos.png' alt="Imagem de Perfil, com camisa azul." />
+          <ImageAvatar src={currentUser.img} alt={`Imagem de Perfil, ${currentUser.username}`} />
+          <TopbarIconContainer onClick={() => logout(dispatch)}>
+            <ExitToApp />
+          </TopbarIconContainer>
         </TopRight>
       </TopbarWrapper>
     </Container>

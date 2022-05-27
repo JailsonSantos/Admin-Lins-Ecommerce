@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 import { DeleteOutline } from '@material-ui/icons';
 import { DataGrid, GridColDef } from "@material-ui/data-grid";
@@ -10,49 +10,87 @@ import {
   SectionContainer,
   WidgetContainer,
 } from '../../styles/globalStyles';
-import { Container } from '../../styles/usersStyles';
+
+import {
+  Container,
+  UserTitleContainer,
+  UserTitle,
+  UserAddButton,
+} from '../../styles/usersStyles';
 
 //Components
 import Topbar from '../../components/Topbar';
 import Sidebar from '../../components/Sidebar';
 
-// Fictional Data
-import { userRows } from '../../fictionalData';
+// API
+import { userRequest } from '../../services/api';
+
+interface UsersProps {
+  _id: string;
+  username: string;
+  occupation: string;
+  email: string;
+  password: string;
+  isAdmin: boolean;
+  img: string;
+}
+
+import { useRouter } from "next/router";
+
 
 export default function Users() {
 
-  const [data, setData] = useState(userRows);
+  const router = useRouter();
+  const [users, setUsers] = useState<UsersProps[]>([]);
+  const [userDelete, setUserDelete] = useState(false);
 
-  const handleDelete = (id: Number) => {
-    setData(data.filter((item) => item.id !== id))
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const response = await userRequest.get('/users');
+        setUsers(response.data);
+      } catch (error: any) {
+        throw error.message;
+      }
+    }
+    getUsers();
+  }, [userDelete]);
+
+  const handleDelete = async (id: string) => {
+
+    try {
+      await userRequest.delete(`/users/${id}`);
+      setUserDelete(!userDelete);
+    } catch (error: any) {
+      throw error.message;
+    }
   }
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 90 },
+    { field: '_id', headerName: 'ID', width: 90 },
     {
-      field: 'username', headerName: 'User name', width: 200,
+      field: 'username', headerName: 'Nome de Usuario', width: 200,
       renderCell: (params) => {
         return (
           <div className="userList">
-            <img className="userAvatar" src={params.row.avatar} alt="Foto de perfil do usuario" />
+            <img className="userAvatar" src={params.row.img} alt="Foto de perfil do usuario" />
             {params.row.username}
           </div>
         )
       },
     },
-    { field: 'email', headerName: 'E-mail', width: 200 },
-    { field: 'status', headerName: 'Status', width: 120 },
-    { field: 'transaction', headerName: 'Transaction', width: 160 },
+    { field: 'occupation', headerName: 'Profissão', width: 200 },
+    { field: 'email', headerName: 'E-mail', width: 250 },
     {
-      field: 'action', headerName: 'Action', width: 150, renderCell: (params) => {
+      field: 'isAdmin', headerName: 'Administrador', width: 200, renderCell: (params) => {
         return (
           <>
-            <Link href={`/user/${params.row.id}`}>
+            <Link href={`/user/${params.row._id}`}>
               <a>
                 <button className="BtnEditUser">EDITAR</button>
               </a>
             </Link>
-            <DeleteOutline className="BtnDeleteUser" onClick={() => handleDelete(params.row.id)} />
+            <DeleteOutline className="BtnDeleteUser" onClick={() => handleDelete(params.row._id)} />
           </>
         )
       }
@@ -65,13 +103,22 @@ export default function Users() {
       <Main>
         <Sidebar />
         <SectionContainer>
+          <UserTitleContainer>
+            <UserTitle>Usuários</UserTitle>
+            <Link href="/newuser">
+              <a>
+                <UserAddButton>Criar</UserAddButton>
+              </a>
+            </Link>
+          </UserTitleContainer>
           <WidgetContainer>
             <Container>
               <DataGrid
-                rows={data}
+                rows={users}
                 disableSelectionOnClick
                 columns={columns}
                 pageSize={8}
+                getRowId={(row) => row._id}
                 rowsPerPageOptions={[5]}
                 checkboxSelection
               />

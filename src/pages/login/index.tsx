@@ -35,6 +35,7 @@ export default function Login() {
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     if (username !== '' && password !== '') {
       await login(dispatch, { username, password });
     }
@@ -50,16 +51,15 @@ export default function Login() {
 
   return (
     <>
-      {loading ? <h1>Loading...</h1>
-        :
+      {!loading &&
         <Container>
           <Wrapper>
             <Title>SIGN IN</Title>
             <Form className="form" onSubmit={(event) => handleLogin(event)}>
               <Input type="text" placeholder="Username" onChange={(event) => setUserName(event.target.value)} />
               <Input type="password" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
-              <Button type="submit"
-              >
+
+              <Button type="submit">
                 {isFetching ? <ReactLoading type="spokes" height="16px" width="16px" color="#fff" /> : 'LOGIN'}
               </Button>
 

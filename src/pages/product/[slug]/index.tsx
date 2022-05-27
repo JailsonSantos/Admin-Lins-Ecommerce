@@ -55,6 +55,7 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/
 import { useDispatch } from 'react-redux';
 import ReactLoading from 'react-loading';
 import { updateProduct } from '../../../redux/apiCalls';
+import toast from 'react-hot-toast';
 
 interface StatisticsProps {
   _id: number;
@@ -83,17 +84,16 @@ export default function Product() {
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-
   const [categories, setCategories] = useState([''])
   const [color, setColors] = useState(['']);
   const [size, setSizes] = useState(['']);
-
   const [price, setPrice] = useState('');
+  const [inStock, setInStock] = useState("true");
+
   const [file, setFile] = useState<any>({});
 
 
   //const [file, setFile] = useState(null);
-  const [inStock, setInStock] = useState("true");
 
   //const [valores, setValores] = useState<any>([]);
 
@@ -129,11 +129,13 @@ export default function Product() {
 
   // Falta exibir os dados atualizados
 
-  const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoading(true);
 
-    try {    // Chamada a API 
+    try {
+
+      setLoading(true);
+
       if (file.name) {
         const fileName = new Date().getTime() + file.name;
         const storage = getStorage(app);
@@ -160,12 +162,31 @@ export default function Product() {
           },
           () => {
             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
 
-              const productUp = { ...inputs, img: downloadURL };
-              updateProduct(productId, productUp, dispatch);
+              const productUpdated = { ...inputs, img: downloadURL };
 
-              window.location.reload()
+              try {
+                const response = await userRequest.put(`/products/${productId}`, productUpdated);
+                // setUser(response.data);
+                updateProduct(productId, productUpdated, dispatch);
+
+                toast("Produto atualizado com sucesso!", {
+                  style: {
+                    background: '#00947e',
+                    color: '#FFF',
+                  }
+                });
+
+              } catch (error) {
+                toast("Falha na atualização. Tente novamente", {
+                  style: {
+                    background: '#fe0956',
+                    color: '#FFFFFF',
+                  }
+                });
+              }
+              //window.location.reload()
               //router.push('/products');
               //console.log(productUp);
 
@@ -173,20 +194,47 @@ export default function Product() {
           }
         );
       } else {
-        const productUp = { ...inputs };
-        updateProduct(productId, productUp, dispatch);
 
-        window.location.reload();
+        const productUpdated = { ...inputs };
+
+        try {
+          const response = await userRequest.put(`/products/${productId}`, productUpdated);
+          // setUser(response.data);
+          updateProduct(productId, productUpdated, dispatch);
+
+          toast("Produto atualizado com sucesso!", {
+            style: {
+              background: '#00947e',
+              color: '#FFF',
+            }
+          });
+
+        } catch (error) {
+          toast("Falha na atualização. Tente novamente", {
+            style: {
+              background: '#fe0956',
+              color: '#FFFFFF',
+            }
+          });
+        }
+        //updateProduct(productId, productUp, dispatch);
+
+        //window.location.reload();
         //router.push('/products');
 
         //console.log(productUp);
       }
-      alert('success');
 
-    } catch (Error: any) {
-      throw new Error(Error.message);
+    } catch (error) {
+      toast("Falha na atualização. Tente novamente", {
+        style: {
+          background: '#fe0956',
+          color: '#FFFFFF',
+        }
+      });
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
 
@@ -278,6 +326,7 @@ export default function Product() {
               <ProductBottom>
                 <ProductForm className="form" onSubmit={(event) => handleSubmitForm(event)}>
                   <ProductFormLeft>
+
                     <ProductUpdatedItem>
                       <ProductLabel>Nome</ProductLabel>
                       <ProductInput
@@ -288,36 +337,17 @@ export default function Product() {
                       />
                     </ProductUpdatedItem>
 
-                    {/* 
-                      <ProductUpdatedItem>
-
-                        <ProductLabel>Descrição</ProductLabel>
-                        <ProductInput
-                          type="text"
-                          value={description}
-                          placeholder={product?.description}
-                          onChange={(e) => setDescription(e.target.value)}
-                        />
-                      </ProductUpdatedItem> */}
-
-                    {/* TESTE */}
                     <ProductUpdatedItem>
-
                       <ProductLabel>Descrição</ProductLabel>
                       <ProductInput
                         type="text"
                         name="description"
                         placeholder={product?.description}
                         onChange={handleChangeInputs}
-                      // value={description}
-                      // placeholder={product?.description}
                       />
                     </ProductUpdatedItem>
 
-
-                    {/* FIM DO TESTE */}
                     <ProductUpdatedItem>
-
                       <ProductLabel>Categoria</ProductLabel>
                       <ProductInput
                         type="text"
@@ -326,8 +356,8 @@ export default function Product() {
                         onChange={handleChangeInputs}
                       />
                     </ProductUpdatedItem>
-                    <ProductUpdatedItem>
 
+                    <ProductUpdatedItem>
                       <ProductLabel>Cores</ProductLabel>
                       <ProductInput
                         name="color"
@@ -336,8 +366,8 @@ export default function Product() {
                         onChange={handleChangeInputs}
                       />
                     </ProductUpdatedItem>
-                    <ProductUpdatedItem>
 
+                    <ProductUpdatedItem>
                       <ProductLabel>Tamanhos</ProductLabel>
                       <ProductInput
                         name="size"
@@ -346,8 +376,8 @@ export default function Product() {
                         onChange={handleChangeInputs}
                       />
                     </ProductUpdatedItem>
-                    <ProductUpdatedItem>
 
+                    <ProductUpdatedItem>
                       <ProductLabel>Preço</ProductLabel>
                       <ProductInput
                         name="price"
@@ -356,8 +386,8 @@ export default function Product() {
                         onChange={handleChangeInputs}
                       />
                     </ProductUpdatedItem>
-                    <ProductUpdatedItem>
 
+                    <ProductUpdatedItem>
                       <ProductLabel>Em Estoque</ProductLabel>
                       <ProductSelect
                         name="inStock"
@@ -370,32 +400,31 @@ export default function Product() {
                     </ProductUpdatedItem>
 
                   </ProductFormLeft>
+
                   <ProductFormRight>
                     <ProductUpload>
                       <ProductUploadLabel htmlFor="file">
-
                         {file?.name
                           ?
                           <ProductUploadImage src={URL.createObjectURL(file)} alt={file.name} />
                           :
                           <ProductUploadImage src={product?.img} alt={product?.description} />
                         }
-
                         <Publish />
-
                       </ProductUploadLabel>
                       <ProductUploadInput
                         type="file"
                         id="file"
                         onChange={(event) => setFile(event.target.files[0])}
-                      //onChange={(event) => setFile(event.target.files)[0]}
                       />
                     </ProductUpload>
 
                     <ProductUploadButton type="submit">
                       {loading ? <ReactLoading type="spokes" height="16px" width="16px" color="#fff" /> : 'ATUALIZAR'}
                     </ProductUploadButton>
+
                   </ProductFormRight>
+
                 </ProductForm>
               </ProductBottom>
 

@@ -38,8 +38,6 @@ export default function Products() {
   const { isFetching } = useSelector((state: RootState) => state.user);
   const products = useSelector((state: RootState) => state.product.products);
 
-  const [data, setData] = useState();
-
   console.log(products);
 
   const handleDelete = (id: Number) => {

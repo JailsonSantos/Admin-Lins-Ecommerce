@@ -41,13 +41,15 @@ function FeaturedInfo() {
     getIncome();
   }, [])
 
+  console.log(income)
+
   return (
     <Container>
 
       <FeaturedItem>
         <FeaturedTitle>Receita</FeaturedTitle>
         <FeaturedMoneyContainer>
-          <FeaturedMoney> R$ {income[1]?.total}</FeaturedMoney>
+          <FeaturedMoney> R$ {income[0]?.total}</FeaturedMoney>
 
           {percent < 0
             ?

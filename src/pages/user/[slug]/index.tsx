@@ -44,8 +44,166 @@ import Topbar from '../../../components/Topbar';
 import Sidebar from '../../../components/Sidebar';
 import { CalendarToday, LocationSearching, MailOutline, PermIdentity, PhoneAndroid, Publish } from '@material-ui/icons';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { userRequest } from '../../../services/api';
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import app from '../../../firebase';
+import ReactLoading from 'react-loading';
+import toast from 'react-hot-toast';
+
+interface UsersProps {
+  _id: string;
+  username: string;
+  occupation: string;
+  email: string;
+  password: string;
+  isAdmin: boolean;
+  img: string;
+}
 
 export default function User() {
+
+  const router = useRouter();
+  const userId = router.query.slug;
+
+  console.log(userId);
+
+  const [user, setUser] = useState<UsersProps>({} as UsersProps);
+
+  const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState<any>({});
+
+  const [inputs, setInputs] = useState({});
+
+  const handleChangeInputs = (event: { target: { name: any; value: any; }; }) => {
+    setInputs((prev) => {
+      return { ...prev, [event.target.name]: event.target.value };
+    });
+  };
+
+  const handleSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+
+      setLoading(true);
+
+      if (file.name) {
+        const fileName = new Date().getTime() + file.name;
+        const storage = getStorage(app);
+        const storageRef = ref(storage, fileName);
+
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        uploadTask.on('state_changed',
+          (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+              case 'paused':
+                console.log('Upload is paused');
+                break;
+              case 'running':
+                console.log('Upload is running');
+                break;
+              default:
+            }
+          },
+          (error) => {
+            console.log('Error while uploading: ' + error)
+          },
+          () => {
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+
+              const userUpdated = { ...inputs, img: downloadURL };
+
+              try {
+                const response = await userRequest.put(`/users/${userId}`, userUpdated);
+                setUser(response.data);
+
+                toast("Usuário atualizado com sucesso!", {
+                  style: {
+                    background: '#00947e',
+                    color: '#FFF',
+                  }
+                });
+
+              } catch (error) {
+                toast("Falha na atualização. Tente novamente", {
+                  style: {
+                    background: '#fe0956',
+                    color: '#FFFFFF',
+                  }
+                });
+              }
+
+              //updateProduct(userId, productUp, dispatch);
+
+              //router.push('/products');
+              console.log(userUpdated);
+
+            });
+          }
+        );
+      } else {
+
+        const userUpdated = { ...inputs };
+
+        try {
+          const response = await userRequest.put(`/users/${userId}`, userUpdated);
+          setUser(response.data);
+
+          toast("Usuário atualizado com sucesso!", {
+            style: {
+              background: '#00947e',
+              color: '#FFF',
+            }
+          });
+
+        } catch (error) {
+          toast("Falha na atualização. Tente novamente", {
+            style: {
+              background: '#fe0956',
+              color: '#FFFFFF',
+            }
+          });
+        }
+        console.log(userUpdated);
+
+        //router.push('/products');
+
+        //console.log(productUp);
+      }
+
+    } catch (Error) {
+      toast("Falha na atualização. Tente novamente", {
+        style: {
+          background: '#fe0956',
+          color: '#FFFFFF',
+        }
+      });
+    } finally {
+      setLoading(false);
+      setInputs({});
+    }
+  }
+
+
+  useEffect(() => {
+
+    const getUser = async () => {
+      try {
+        const response = await userRequest.get(`users/find/${userId}`);
+        setUser(response.data);
+      } catch (error: any) {
+        throw error.message;
+      }
+    }
+    getUser();
+  }, [userId]);
+
 
   return (
     <>
@@ -57,29 +215,22 @@ export default function User() {
             <Container>
               <UserTitleContainer>
                 <UserTitle>Editar Usuário</UserTitle>
-                <Link href="/newuser">
-                  <a>
-                    <UserAddButton>
-                      Criar
-                    </UserAddButton>
-                  </a>
-                </Link>
               </UserTitleContainer>
 
               <UserContainer>
                 <UserShow>
                   <UserShowTop>
-                    <UserShowImage src="https://github.com/jailsonsantos.png" alt="Foto de perfil, com camisa azul." />
+                    <UserShowImage src={user.img || "https://www.pol.una.py/wp-content/uploads/2021/10/main-thumb-1363241199-200-kbcrxygrufulfyqwbrbjuppihntqxcme.jpeg"} alt="Foto de perfil, com camisa azul." />
                     <UserShowTopTitle>
-                      <UserShowTopName>Jailson Santos</UserShowTopName>
-                      <UserShowTopOffice>Design Gráfico</UserShowTopOffice>
+                      <UserShowTopName>{user.username}</UserShowTopName>
+                      <UserShowTopOffice>{user.occupation}</UserShowTopOffice>
                     </UserShowTopTitle>
                   </UserShowTop>
                   <UserShowBottom>
                     <UserShowTitle>Detalhes da Conta</UserShowTitle>
                     <UserShowInfo>
                       <PermIdentity />
-                      <UserShowInfoTitle>Lins007</UserShowInfoTitle>
+                      <UserShowInfoTitle>{user.username}</UserShowInfoTitle>
                     </UserShowInfo>
                     <UserShowInfo>
                       <CalendarToday />
@@ -93,7 +244,7 @@ export default function User() {
                     </UserShowInfo>
                     <UserShowInfo>
                       <MailOutline />
-                      <UserShowInfoTitle>Lins007@gmail.com</UserShowInfoTitle>
+                      <UserShowInfoTitle>{user.email}</UserShowInfoTitle>
                     </UserShowInfo>
                     <UserShowInfo>
                       <LocationSearching />
@@ -104,20 +255,35 @@ export default function User() {
                 <UserUpdate>
                   <UserUpdateTitle>Editar</UserUpdateTitle>
 
-                  <UserUpdateForm>
+                  <UserUpdateForm className="form" onSubmit={(event) => handleSubmitForm(event)}>
 
                     <UserUpdateLeft>
                       <UserUpdateItem>
                         <UserLabel>Nome do Usuário</UserLabel>
-                        <UserUpdateInput type="text" placeholder="lins007" />
+                        <UserUpdateInput
+                          type="text"
+                          name="username"
+                          placeholder={user.username}
+                          onChange={handleChangeInputs}
+                        />
                       </UserUpdateItem>
                       <UserUpdateItem>
-                        <UserLabel>Nome Completo</UserLabel>
-                        <UserUpdateInput type="text" placeholder="Jailson Santos" />
+                        <UserLabel>Profissão</UserLabel>
+                        <UserUpdateInput
+                          type="text"
+                          name="occupation"
+                          placeholder={user.occupation}
+                          onChange={handleChangeInputs}
+                        />
                       </UserUpdateItem>
                       <UserUpdateItem>
                         <UserLabel>E-mail</UserLabel>
-                        <UserUpdateInput type="email" placeholder="lins007@gmail.com" />
+                        <UserUpdateInput
+                          type="email"
+                          name="email"
+                          placeholder={user.email}
+                          onChange={handleChangeInputs}
+                        />
                       </UserUpdateItem>
                       <UserUpdateItem>
                         <UserLabel>Telefone</UserLabel>
@@ -131,14 +297,27 @@ export default function User() {
 
                     <UserUpdateRight>
                       <UserUpdateUpload>
-                        <UserUpdateImage src="https://github.com/jailsonsantos.png" alt="Foto de perfil, com camisa azul." />
                         <UserUpdateLabel htmlFor="file">
+                          {file?.name
+                            ?
+                            <UserUpdateImage src={URL.createObjectURL(file)} alt={file.name} />
+                            :
+                            <UserUpdateImage src={user.img} alt="Foto de perfil do usuário." />
+                          }
+
                           <Publish />
                         </UserUpdateLabel>
-                        <UserInput type="file" id="file" />
+                        <UserInput
+                          type="file"
+                          id="file"
+                          onChange={(event) => setFile(event.target.files[0])}
+                        />
                       </UserUpdateUpload>
 
-                      <UserUploadButton>Atualizar</UserUploadButton>
+                      <UserUploadButton type="submit">
+                        {loading ? <ReactLoading type="spokes" height="16px" width="16px" color="#fff" /> : 'ATUALIZAR'}
+                      </UserUploadButton>
+
                     </UserUpdateRight>
 
                   </UserUpdateForm>

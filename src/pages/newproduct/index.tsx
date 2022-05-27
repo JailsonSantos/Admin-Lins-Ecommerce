@@ -37,6 +37,7 @@ import ReactLoading from 'react-loading';
 
 // Validação de forms
 import * as yup from 'yup';
+import toast from 'react-hot-toast';
 
 export default function NewProduct() {
 
@@ -53,6 +54,7 @@ export default function NewProduct() {
   const [price, setPrice] = useState('');
   const [file, setFile] = useState<any>({});
   const [inStock, setInStock] = useState("true");
+
 
   /* 
     const createUserFormSchema = yup.object().shape({
@@ -79,56 +81,134 @@ export default function NewProduct() {
     setSizes(event.target.value.split(','));
   }
 
-  const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoading(true);
 
-    // Chamada a API 
-    if (file) {
-      const fileName = new Date().getTime() + file.name;
-      const storage = getStorage(app);
-      const storageRef = ref(storage, fileName);
 
-      const uploadTask = uploadBytesResumable(storageRef, file);
-
-      uploadTask.on('state_changed',
-        (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log('Upload is ' + progress + '% done');
-          switch (snapshot.state) {
-            case 'paused':
-              console.log('Upload is paused');
-              break;
-            case 'running':
-              console.log('Upload is running');
-              break;
-            default:
-          }
-        },
-        (error) => {
-          console.log('Error while uploading: ' + error)
-        },
-        () => {
-          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            const product = { title, description, price, img: downloadURL, categories, color, size, inStock };
-            createProduct(product, dispatch);
-          });
+    if (!title || !description || categories == [] || color === [] || size === [] || !price) {
+      toast("Preencha todos os campos!", {
+        style: {
+          background: '#fe0956',
+          color: '#FFFFFF',
         }
-      );
+      });
+      return;
     }
 
-    setLoading(false);
+    try {
+      setLoading(true);
 
-    alert('success');
-    setTitle('');
-    setDescription('');
-    setColors(['']);
-    setCategories(['']);
-    setSizes(['']);
-    setPrice('');
-    setInStock('true');
-    setFile({});
+      if (file.name) {
+
+        const fileName = new Date().getTime() + file.name;
+        const storage = getStorage(app);
+        const storageRef = ref(storage, fileName);
+
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        uploadTask.on('state_changed',
+          (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+              case 'paused':
+                console.log('Upload is paused');
+                break;
+              case 'running':
+                console.log('Upload is running');
+                break;
+              default:
+            }
+          },
+          (error) => {
+            console.log('Error while uploading: ' + error)
+          },
+          () => {
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+              const product = { title, description, price, img: downloadURL, categories, color, size, inStock };
+
+              try {
+                await createProduct(product, dispatch);
+                toast("Produto cadastrado com sucesso!", {
+                  style: {
+                    background: '#00947e',
+                    color: '#FFF',
+                  }
+                });
+
+                setTitle('');
+                setDescription('');
+                setColors(['']);
+                setCategories(['']);
+                setSizes(['']);
+                setPrice('');
+                setInStock('true');
+                setFile({});
+
+              } catch (error) {
+                toast("Falha ao cadastrar novo produto. Tente novamente", {
+                  style: {
+                    background: '#fe0956',
+                    color: '#FFFFFF',
+                  }
+                });
+              }
+            });
+          }
+        );
+      } else {
+        const product = { title, description, price, categories, color, size, inStock };
+
+        try {
+          await createProduct(product, dispatch);
+
+          toast("Produto cadastrado com sucesso!", {
+            style: {
+              background: '#00947e',
+              color: '#FFF',
+            }
+          });
+
+          setTitle('');
+          setDescription('');
+          setColors(['']);
+          setCategories(['']);
+          setSizes(['']);
+          setPrice('');
+          setInStock('true');
+          setFile({});
+
+        } catch (error) {
+          toast("Falha ao cadastrar novo produto. Tente novamente", {
+            style: {
+              background: '#fe0956',
+              color: '#FFFFFF',
+            }
+          });
+        }
+      }
+
+    } catch (error) {
+      toast("Falha ao cadastrar novo produto. Tente novamente", {
+        style: {
+          background: '#fe0956',
+          color: '#FFFFFF',
+        }
+      });
+    } finally {
+      setLoading(false);
+    }
+
+
+    /*   setTitle('');
+      setDescription('');
+      setColors(['']);
+      setCategories(['']);
+      setSizes(['']);
+      setPrice('');
+      setInStock('true');
+      setFile({}); */
   }
 
   return (

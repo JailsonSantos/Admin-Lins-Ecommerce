@@ -5,6 +5,7 @@ export interface SliceState {
     _id: '',
     username: string;
     email: string;
+    img: string;
     isAdmin: boolean;
     accessToken: string;
     createdAt: string;
@@ -20,6 +21,7 @@ const initialState: SliceState = {
     _id: '',
     username: '',
     email: '',
+    img: '',
     isAdmin: false,
     accessToken: '',
     createdAt: '',
@@ -58,6 +60,19 @@ export const userSlice = createSlice({
       state.isFetching = false;
       state.error = true;
     },
+    // CREATE USER
+    createUserStart: (state) => {
+      state.isFetching = true;
+      state.error = false;
+    },
+    createUserSuccess: (state, action) => {
+      state.isFetching = false;
+      state.error = false;
+    },
+    createUserFailure: (state) => {
+      state.isFetching = false;
+      state.error = true;
+    },
   }
 });
 
@@ -68,5 +83,8 @@ export const {
   logoutStart,
   logoutSuccess,
   logoutFailure,
+  createUserStart,
+  createUserSuccess,
+  createUserFailure,
 } = userSlice.actions;
 export default userSlice.reducer;

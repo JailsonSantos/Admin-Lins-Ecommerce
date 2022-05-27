@@ -1,26 +1,23 @@
-import { setCookie } from "nookies";
+import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { publicRequest, userRequest } from "../services/api";
+import { loginStart, loginSuccess, loginFailure, logoutSuccess, logoutStart, logoutFailure, } from "./userRedux";
+import { createUserStart, createUserSuccess, createUserFailure, } from './userRedux';
+import { createProductStart, createProductSuccess, createProductFailure, getProductStart, getProductSuccess, getProductFailure, deleteProductStart, deleteProductSuccess, deleteProductFailure, updateProductStart, updateProductSuccess, updateProductFailure, } from "./productRedux";
 
-import {
-  loginStart,
-  loginSuccess,
-  loginFailure,
-} from "./userRedux";
+// USERS
+export const createUser = async (user: any, dispatch: (arg0: { payload: any; type: string; }) => void) => {
 
-import {
-  createProductStart,
-  createProductSuccess,
-  createProductFailure,
-  getProductStart,
-  getProductSuccess,
-  getProductFailure,
-  deleteProductStart,
-  deleteProductSuccess,
-  deleteProductFailure,
-  updateProductStart,
-  updateProductSuccess,
-  updateProductFailure,
-} from "./productRedux";
+  dispatch(createUserStart());
+
+  try {
+    const response = await userRequest.post('/auth/register', user);
+    console.log(response)
+    dispatch(createUserSuccess(response.data));
+  } catch (error: any) {
+    console.log("Deu error: " + error.response.data)
+    dispatch(createUserFailure());
+  }
+}
 
 export const login = async (dispatch: (arg0: { payload: any; type: string; }) => void, user: any) => {
 
@@ -50,6 +47,29 @@ export const login = async (dispatch: (arg0: { payload: any; type: string; }) =>
   }
 }
 
+
+export const logout = async (dispatch: ((arg0: { payload: undefined; type: string; }) => void)) => {
+
+  dispatch(logoutStart());
+
+  try {
+
+    const cookies = parseCookies();
+    const { ADMIN, TOKEN } = cookies;
+
+    destroyCookie(null, 'TOKEN', TOKEN);
+    destroyCookie(null, 'ADMIN', ADMIN);
+
+    dispatch(logoutSuccess())
+
+    window.location.href = '/login';
+
+  } catch (error) {
+    dispatch(logoutFailure());
+  }
+}
+
+// PRODUCTS
 export const getProducts = async (dispatch: (arg0: { payload: any; type: string; }) => void) => {
 
   dispatch(getProductStart());
@@ -68,10 +88,8 @@ export const deleteProduct = async (id: any, dispatch: (arg0: { payload: any; ty
   dispatch(deleteProductStart());
 
   try {
-
     const response = await userRequest.delete(`/products/${id}`);
     dispatch(deleteProductSuccess(id));
-
   } catch (error) {
     dispatch(deleteProductFailure());
   }

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-interface SidebarListItem {
-  active?: boolean;
+interface NavLinkContainerProps {
+  isActive: boolean;
 }
 
 export const Container = styled.div`
@@ -31,21 +31,26 @@ export const SidebarList = styled.ul`
   list-style: none;
 `;
 
-export const SidebarListItem = styled.li<SidebarListItem>`
-  padding: 5px;
-  display: flex;
-  cursor: pointer;
-  border-radius: 5px;
-  align-items: center;
-  background-color: ${({ active, theme }) => active ? theme.selected : 'transparent'};
+export const NavLinkContainer = styled.li<NavLinkContainerProps>`
+  a{
+    padding: 5px;
+    display: flex;
+    cursor: pointer;
+    border-radius: 5px;
+    align-items: center;
+    background-color: ${({ isActive, theme }) => isActive ? theme.selected : 'transparent'};
 
-  &:hover{
-    background-color: ${({ theme }) => theme.selected};
-  }
+    &:hover{
+      background-color: ${({ theme }) => theme.selected};
+    }
 
-  svg{
-    font-size: 20px;
-    margin-right: 5px;
+    svg{
+      font-size: 20px;
+      margin-right: 5px;
+    }
+    @media(max-width: 768px) {
+      font-size: 0.85rem;
+    }
   }
 `;
 

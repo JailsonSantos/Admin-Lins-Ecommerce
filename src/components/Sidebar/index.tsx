@@ -4,7 +4,6 @@ import {
   SidebarMenu,
   Title,
   SidebarList,
-  SidebarListItem,
 } from './styles';
 
 import {
@@ -21,7 +20,9 @@ import {
   WorkOutline,
   ReportOutlined
 } from '@material-ui/icons';
-import Link from 'next/link';
+
+// Component
+import NavLink from './NavLink';
 
 function Sidebar() {
   return (
@@ -31,90 +32,63 @@ function Sidebar() {
         <SidebarMenu>
           <Title>Painel de Controle</Title>
           <SidebarList>
-            <Link href="/">
-              <a>
-                <SidebarListItem active>
-                  <LineStyle />
-                  Início
-                </SidebarListItem>
-              </a>
-            </Link>
-            <SidebarListItem>
+            <NavLink title="Início" path="/" >
+              <LineStyle />
+            </NavLink>
+            <NavLink title="Análise" path="#" >
               <Timeline />
-              Análise
-            </SidebarListItem>
-
-            <SidebarListItem>
+            </NavLink>
+            <NavLink title="Vendas" path="#" >
               <TrendingUp />
-              Vendas
-            </SidebarListItem>
-
+            </NavLink>
           </SidebarList>
         </SidebarMenu>
 
         <SidebarMenu>
           <Title>Menu Rápido</Title>
           <SidebarList>
-            <Link href="/users">
-              <a>
-                <SidebarListItem>
-                  <PersonOutline />
-                  Usuários
-                </SidebarListItem>
-              </a>
-            </Link>
-            <Link href="/products">
-              <a>
-                <SidebarListItem>
-                  <Storefront />
-                  Produtos
-                </SidebarListItem>
-              </a>
-            </Link>
-            <SidebarListItem>
+            <NavLink title="Usuários" path="/users" >
+              <PersonOutline />
+            </NavLink>
+            <NavLink title="Produtos" path="/products" >
+              <Storefront />
+            </NavLink>
+            <NavLink title="Transações" path="#" >
               <AttachMoney />
-              Transações
-            </SidebarListItem>
-            <SidebarListItem>
+            </NavLink>
+            <NavLink title="Relatórios" path="#" >
               <BarChart />
-              Relatórios
-            </SidebarListItem>
+            </NavLink>
           </SidebarList>
         </SidebarMenu>
 
         <SidebarMenu>
           <Title>Notificações</Title>
           <SidebarList>
-            <SidebarListItem>
+            <NavLink title="E-mail" path="#" >
               <MailOutline />
-              E-mail
-            </SidebarListItem>
-            <SidebarListItem>
+            </NavLink>
+            <NavLink title="Comentários" path="#" >
               <DynamicFeed />
-              Comentários
-            </SidebarListItem>
-            <SidebarListItem>
+            </NavLink>
+            <NavLink title="Mensagens" path="#" >
               <ChatBubbleOutline />
-              Mensagens
-            </SidebarListItem>
+            </NavLink>
           </SidebarList>
         </SidebarMenu>
 
         <SidebarMenu>
           <Title>Pessoal</Title>
           <SidebarList>
-            <SidebarListItem>
+            <NavLink title=" Gerenciar" path="#" >
               <WorkOutline />
-              Gerenciar
-            </SidebarListItem>
-            <SidebarListItem>
+            </NavLink>
+            <NavLink title="Análise" path="#" >
               <Timeline />
-              Análise
-            </SidebarListItem>
-            <SidebarListItem>
+            </NavLink>
+            <NavLink title="Relatórios" path="#" >
               <ReportOutlined />
-              Relatórios
-            </SidebarListItem>
+            </NavLink>
           </SidebarList>
         </SidebarMenu>
 

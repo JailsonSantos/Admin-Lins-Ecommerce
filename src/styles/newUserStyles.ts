@@ -71,6 +71,20 @@ export const NewUserSelect = styled.select`
 
 export const NewUserOption = styled.option``;
 
+export const NewUsertCreateLabel = styled.label`
+  width: 80px;
+`;
+
+export const NewUserImage = styled.img`
+  width: auto;
+  border-radius: 5px;
+`;
+
+export const NewUserInputImage = styled.input`
+  display: none;
+`;
+
+
 export const NewUserButton = styled.button`
   width: 200px;
   border: none;

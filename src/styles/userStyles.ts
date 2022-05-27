@@ -166,6 +166,9 @@ export const UserUpdateLabel = styled.label`
   padding: 10px;
   cursor: pointer;
   transition: 0.5s;
+
+  display: flex;
+  align-items: center;
   
   &:hover {
     svg{ 

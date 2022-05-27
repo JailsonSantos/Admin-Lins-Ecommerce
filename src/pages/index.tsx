@@ -12,13 +12,11 @@ import { Main, SectionContainer, WidgetContainer } from '../styles/globalStyles'
 
 // Fictional Data
 import { parseCookies } from "nookies";
-import { userData } from '../fictionalData';
 import WidgetLarge from "../components/WidgetLarge";
 import WidgetSmall from "../components/WidgetSmall";
 import { userRequest } from "../services/api";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-
 
 interface OrdersProps {
   _id: number;
@@ -35,7 +33,7 @@ export default function Home() {
   const cookies = parseCookies();
   const { ADMIN } = cookies;
 
-  const { currentUser, isFetching } = useSelector((state: RootState) => state.user);
+  const { currentUser } = useSelector((state: RootState) => state.user);
 
   const [userStatus, setUserStatus] = useState<any[]>([]);
 
@@ -82,7 +80,7 @@ export default function Home() {
 
   return (
     <>
-      {isFetching || !ADMIN || !currentUser._id ? <h1>Loading</h1> :
+      {!ADMIN || !currentUser._id ? <h1>Loading</h1> :
 
         <>
           <Topbar />
