@@ -1,4 +1,7 @@
-// Styles
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+
+// Styles Global
 import {
   Main,
   SectionContainer,
@@ -28,29 +31,38 @@ import {
   UserUpdateItem,
   UserLabel,
   UserUpdateInput,
-
-
   UserUpdateRight,
   UserUpdateUpload,
   UserUpdateImage,
   UserUpdateLabel,
   UserInput,
   UserUploadButton
-
 } from '../../../styles/userStyles';
 
 //Components
 import Topbar from '../../../components/Topbar';
 import Sidebar from '../../../components/Sidebar';
-import { CalendarToday, LocationSearching, MailOutline, PermIdentity, PhoneAndroid, Publish } from '@material-ui/icons';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { userRequest } from '../../../services/api';
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
-import app from '../../../firebase';
-import ReactLoading from 'react-loading';
+import {
+  CalendarToday,
+  LocationSearching,
+  MailOutline,
+  PermIdentity,
+  PhoneAndroid,
+  Publish
+} from '@material-ui/icons';
 import toast from 'react-hot-toast';
+import ReactLoading from 'react-loading';
+
+// Firebase
+import {
+  getDownloadURL,
+  getStorage, ref,
+  uploadBytesResumable
+} from 'firebase/storage';
+import app from '../../../firebase';
+
+// API
+import { userRequest } from '../../../services/api';
 
 interface UsersProps {
   _id: string;
@@ -72,7 +84,7 @@ export default function User() {
   const [user, setUser] = useState<UsersProps>({} as UsersProps);
 
   const [loading, setLoading] = useState(false);
-  const [file, setFile] = useState<any>({});
+  const [file, setFile] = useState<File>({} as File);
 
   const [inputs, setInputs] = useState({});
 
@@ -80,6 +92,12 @@ export default function User() {
     setInputs((prev) => {
       return { ...prev, [event.target.name]: event.target.value };
     });
+  };
+
+  const handleUploadImage = function (event: React.ChangeEvent<HTMLInputElement>) {
+    const fileList = event.target.files;
+    if (!fileList) return;
+    setFile(fileList[0]);
   };
 
   const handleSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -138,12 +156,6 @@ export default function User() {
                   }
                 });
               }
-
-              //updateProduct(userId, productUp, dispatch);
-
-              //router.push('/products');
-              console.log(userUpdated);
-
             });
           }
         );
@@ -310,7 +322,7 @@ export default function User() {
                         <UserInput
                           type="file"
                           id="file"
-                          onChange={(event) => setFile(event.target.files[0])}
+                          onChange={handleUploadImage}
                         />
                       </UserUpdateUpload>
 

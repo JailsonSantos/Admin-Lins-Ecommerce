@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 // Styles Global
 import {
   Main,
@@ -23,27 +25,26 @@ import {
 } from '../../styles/newProductStyles';
 
 //Components
+import { Publish } from '@material-ui/icons';
 import Topbar from '../../components/Topbar';
 import Sidebar from '../../components/Sidebar';
-import { Publish } from '@material-ui/icons';
-import { useState } from 'react';
-
-// Firebase Upload Files
-import app from '../../firebase';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { useDispatch } from 'react-redux';
-import { createProduct } from '../../redux/apiCalls';
-import ReactLoading from 'react-loading';
 
 // Validação de forms
 import * as yup from 'yup';
+
+// Firebase Upload Files
+import app from '../../firebase';
 import toast from 'react-hot-toast';
+import ReactLoading from 'react-loading';
+import { useDispatch } from 'react-redux';
+import { createProduct } from '../../redux/apiCalls';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+
 
 export default function NewProduct() {
 
   const dispatch = useDispatch();
 
-  // States
   const [loading, setLoading] = useState(false);
 
   const [title, setTitle] = useState('');
@@ -52,22 +53,8 @@ export default function NewProduct() {
   const [color, setColors] = useState(['']);
   const [size, setSizes] = useState(['']);
   const [price, setPrice] = useState('');
-  const [file, setFile] = useState<any>({});
+  const [file, setFile] = useState<File>({} as File);
   const [inStock, setInStock] = useState("true");
-
-
-  /* 
-    const createUserFormSchema = yup.object().shape({
-      name: yup.string().required('Nome é obrigatório'),
-      email: yup.string().required('E-mail obrigatório').email('E-mail inválido'),
-      password: yup.string().required('Senha obrigatória').min(8, 'Senha teve ter no mínimo 8 caracteres'),
-      password_confirmation: yup.string().oneOf([
-        null, yup.ref('password')
-      ], 'As senhas devem ser iguais')
-    });
-  
-   */
-
 
   const handleChangeCategories = (event: any) => {
     setCategories(event.target.value.split(','));
@@ -81,19 +68,21 @@ export default function NewProduct() {
     setSizes(event.target.value.split(','));
   }
 
+  const handleUploadImage = function (event: React.ChangeEvent<HTMLInputElement>) {
+    const fileList = event.target.files;
+
+    if (!fileList) return;
+
+    setFile(fileList[0]);
+
+  };
+
+  console.log(file);
+
   const handleSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-
-    if (!title || !description || categories == [] || color === [] || size === [] || !price) {
-      toast("Preencha todos os campos!", {
-        style: {
-          background: '#fe0956',
-          color: '#FFFFFF',
-        }
-      });
-      return;
-    }
+    if (!(await validate())) return;
 
     try {
       setLoading(true);
@@ -130,6 +119,7 @@ export default function NewProduct() {
 
               try {
                 await createProduct(product, dispatch);
+
                 toast("Produto cadastrado com sucesso!", {
                   style: {
                     background: '#00947e',
@@ -144,7 +134,7 @@ export default function NewProduct() {
                 setSizes(['']);
                 setPrice('');
                 setInStock('true');
-                setFile({});
+                setFile({} as File);
 
               } catch (error) {
                 toast("Falha ao cadastrar novo produto. Tente novamente", {
@@ -158,7 +148,10 @@ export default function NewProduct() {
           }
         );
       } else {
-        const product = { title, description, price, categories, color, size, inStock };
+
+        const img = "data:image/jpeg;base64,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";
+
+        const product = { title, description, price, img, categories, color, size, inStock };
 
         try {
           await createProduct(product, dispatch);
@@ -177,10 +170,10 @@ export default function NewProduct() {
           setSizes(['']);
           setPrice('');
           setInStock('true');
-          setFile({});
+          setFile({} as File);
 
         } catch (error) {
-          toast("Falha ao cadastrar novo produto. Tente novamente", {
+          toast("Falha. Tente novamente", {
             style: {
               background: '#fe0956',
               color: '#FFFFFF',
@@ -188,9 +181,8 @@ export default function NewProduct() {
           });
         }
       }
-
     } catch (error) {
-      toast("Falha ao cadastrar novo produto. Tente novamente", {
+      toast("Não foi Possível cadastrar novo produto. Tente novamente", {
         style: {
           background: '#fe0956',
           color: '#FFFFFF',
@@ -199,16 +191,29 @@ export default function NewProduct() {
     } finally {
       setLoading(false);
     }
+  }
 
+  async function validate() {
+    const schema = yup.object().shape({
+      price: yup.string().required('Preço é obrigatório'),
+      size: yup.array().min(2, "Pelo menos 2 tamanhos são obrigatórios"),
+      color: yup.array().min(2, "Pelo menos 2 cores são obrigatórias"),
+      categories: yup.array().min(2, "Pelo menos 2 categorias são obrigatórias"),
+      description: yup.string().required('Descrição do produto é obrigatória'),
+      title: yup.string().required('Nome do produto é obrigatório'),
+    });
 
-    /*   setTitle('');
-      setDescription('');
-      setColors(['']);
-      setCategories(['']);
-      setSizes(['']);
-      setPrice('');
-      setInStock('true');
-      setFile({}); */
+    try {
+      await schema.validate({ title, description, categories, color, size, price });
+      return true;
+    } catch (error: any) {
+      toast("Error: " + error.errors, {
+        style: {
+          background: '#fe0956',
+          color: '#FFFFFF',
+        }
+      });
+    }
   }
 
   return (
@@ -235,7 +240,7 @@ export default function NewProduct() {
                     <NewProductInputImage
                       type="file"
                       id="file"
-                      onChange={(event) => setFile(event.target.files[0])} />
+                      onChange={handleUploadImage} />
                     <Publish />
                   </ProductUploadLabel>
                 </NewProductItem>

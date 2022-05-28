@@ -88,7 +88,7 @@ export default function Products() {
             <Sidebar />
             <SectionContainer>
               <ProductTitleContainer>
-                <ProductTitle>Produto</ProductTitle>
+                <ProductTitle>Produtos</ProductTitle>
                 <Link href="/newproduct">
                   <a>
                     <ProductAddButton>Criar</ProductAddButton>

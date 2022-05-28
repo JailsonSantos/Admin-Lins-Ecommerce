@@ -32,6 +32,9 @@ import Sidebar from '../../components/Sidebar';
 import { useDispatch } from 'react-redux';
 import { createUser } from '../../redux/apiCalls';
 
+// Validation forms
+import * as yup from 'yup'
+
 import app from '../../firebase';
 import {
   ref,
@@ -39,12 +42,6 @@ import {
   getDownloadURL,
   uploadBytesResumable
 } from 'firebase/storage';
-
-
-// Validation forms
-import * as yup from 'yup'
-
-
 
 
 export default function NewUser() {
@@ -57,21 +54,16 @@ export default function NewUser() {
   const [password, setPassword] = useState('');
   const [isAdmin, setIsAdmin] = useState("false");
   const [occupation, setOccupation] = useState('');
-  const [file, setFile] = useState<any>({});
+  const [file, setFile] = useState<File>({} as File);
 
+  const handleUploadImage = function (event: React.ChangeEvent<HTMLInputElement>) {
+    const fileList = event.target.files;
+    if (!fileList) return;
+    setFile(fileList[0]);
+  };
 
-  async function handleSubmitForm(event: { preventDefault: () => void; }) {
+  async function handleSubmitForm(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
-    /*  if (!username || !email || !password || !occupation) {
-       toast("Preencha todos os campos!", {
-         style: {
-           background: '#fe0956',
-           color: '#FFFFFF',
-         }
-       });
-       return;
-     } */
 
     if (!(await validate())) return;
 
@@ -106,6 +98,7 @@ export default function NewUser() {
           () => {
             // For instance, get the download URL: https://firebasestorage.googleapis.com/...
             getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+
               const user = { username, email, password, occupation, isAdmin, img: downloadURL };
 
               try {
@@ -118,20 +111,26 @@ export default function NewUser() {
                   }
                 });
 
+                setUsername('');
+                setEmail('');
+                setPassword('');
+                setIsAdmin("false");
+                setOccupation('');
+                setFile({} as File);
+
               } catch (error: any) {
                 console.log("Deu error no cadastro: " + error.response.data)
               } finally {
                 setLoading(false);
               }
-
-              // window.location.href = '/users';
             });
           }
         );
 
       } else {
+        const img = "https://amajoinville.jv203.net/wp-content/uploads/sites/1472/2021/12/imagem-sem-foto-de-perfil-do-facebook-1348864936180_956x5001.jpg";
 
-        const user = { username, email, password, occupation, isAdmin, img: '' };
+        const user = { username, email, password, occupation, isAdmin, img };
 
         await createUser(user, dispatch);
 
@@ -141,7 +140,13 @@ export default function NewUser() {
             color: '#FFFFFF',
           }
         });
-        //window.location.href = '/users';
+
+        setUsername('');
+        setEmail('');
+        setPassword('');
+        setIsAdmin("false");
+        setOccupation('');
+        setFile({} as File);
       }
     } catch (error: any) {
       toast("Error a cadastrar novo usuário. Tente novamente", {
@@ -186,7 +191,7 @@ export default function NewUser() {
             <Container>
 
               <NewUserTitle>Novo Usuário</NewUserTitle>
-              <NewUserForm>
+              <NewUserForm className="form" onSubmit={(event) => handleSubmitForm(event)}>
                 <NewUserItem>
                   <NewUserLabel>Nome de Usuário</NewUserLabel>
                   <NewUserInput
@@ -251,12 +256,12 @@ export default function NewUser() {
                     <NewUserInputImage
                       type="file"
                       id="file"
-                      onChange={(event) => setFile(event.target.files[0])} />
+                      onChange={handleUploadImage} />
                     <Publish />
                   </NewUsertCreateLabel>
                 </NewUserItem>
 
-                <NewUserButton type="button" onClick={handleSubmitForm} >
+                <NewUserButton type="submit">
                   {loading ? <ReactLoading type="spokes" height="16px" width="16px" color="#fff" /> : 'CRIAR'}
                 </NewUserButton>
 

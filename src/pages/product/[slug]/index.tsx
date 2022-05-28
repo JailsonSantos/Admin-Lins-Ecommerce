@@ -46,7 +46,7 @@ import Chart from '../../../components/Chart';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
-import { useEffect, useMemo, useState } from 'react';
+import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { userRequest } from '../../../services/api';
 
 // Firebase Upload Files
@@ -65,7 +65,6 @@ interface StatisticsProps {
 interface SortProps {
   _id: number;
 }
-
 export default function Product() {
 
   const router = useRouter();
@@ -77,27 +76,11 @@ export default function Product() {
     state.product.products.find((product: { _id: string | string[] | undefined; }) => product._id === productId)
   );
 
-  //console.log(product);
-
-  // States
   const [loading, setLoading] = useState(false);
 
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [categories, setCategories] = useState([''])
-  const [color, setColors] = useState(['']);
-  const [size, setSizes] = useState(['']);
-  const [price, setPrice] = useState('');
-  const [inStock, setInStock] = useState("true");
+  const [file, setFile] = useState<File>({} as File);
+  const [inputs, setInputs] = useState({ ...product });
 
-  const [file, setFile] = useState<any>({});
-
-
-  //const [file, setFile] = useState(null);
-
-  //const [valores, setValores] = useState<any>([]);
-
-  const [inputs, setInputs] = useState({});
 
   const handleChangeInputs = (event: { target: { name: any; value: any; }; }) => {
     if (event.target.name === 'categories' || event.target.name === 'color' || event.target.name === 'size') {
@@ -113,24 +96,17 @@ export default function Product() {
     }
   };
 
-  /*   const handleChangeCategories = (event: any) => {
-      setCategories(event.target.value.split(','));
-    }
-   
-    const handleChangeColors = (event: any) => {
-      setColors(event.target.value.split(','));
-    }
-   
-    const handleChangeSizes = (event: any) => {
-      setSizes(event.target.value.split(','));
-    } */
+  const handleUploadImage = function (e: React.ChangeEvent<HTMLInputElement>) {
+    const fileList = e.target.files;
 
+    if (!fileList) return;
 
-
-  // Falta exibir os dados atualizados
+    setFile(fileList[0]);
+  };
 
   const handleSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
 
     try {
 
@@ -236,7 +212,6 @@ export default function Product() {
       setLoading(false);
     }
   }
-
 
   const MONTHS = useMemo(
     () => [
@@ -391,7 +366,7 @@ export default function Product() {
                       <ProductLabel>Em Estoque</ProductLabel>
                       <ProductSelect
                         name="inStock"
-                        value={inputs.inStock ? inputs.InStock : product?.inStock.toString()}
+                        value={inputs.inStock ? inputs.inStock.toString() : product?.inStock.toString()}
                         onChange={handleChangeInputs}
                       >
                         <ProductOption value="true">Sim</ProductOption>
@@ -415,7 +390,7 @@ export default function Product() {
                       <ProductUploadInput
                         type="file"
                         id="file"
-                        onChange={(event) => setFile(event.target.files[0])}
+                        onChange={handleUploadImage}
                       />
                     </ProductUpload>
 
