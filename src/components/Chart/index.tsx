@@ -1,15 +1,13 @@
-import {
-  Container,
-  ChartTitle,
-} from './styles';
-
+import { useContext } from 'react';
+import { ThemeContext } from 'styled-components';
+import { Container, ChartTitle, } from './styles';
 import {
   LineChart,
   Line,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
+  CartesianGrid,
   ResponsiveContainer
 } from 'recharts';
 
@@ -32,6 +30,8 @@ interface ChatProps {
 
 function Chart({ title, data, dataKey, grid }: ChatProps) {
 
+  const { colors } = useContext(ThemeContext);
+
   return (
     <Container>
       {title === 'Analise de Usuários' ?
@@ -39,11 +39,11 @@ function Chart({ title, data, dataKey, grid }: ChatProps) {
           <ChartTitle>{title}</ChartTitle>
           <ResponsiveContainer width="100%" aspect={4 / 1}>
             <LineChart data={data}>
-              <XAxis dataKey="name" stroke="#5550bd" />
-              <YAxis dataKey="active_user" stroke="#5550bd" />
-              <Line type="monotone" dataKey={dataKey} stroke="#5550bd" />
+              <XAxis dataKey="name" stroke={colors.primary} />
+              <YAxis dataKey="active_user" stroke={colors.primary} />
+              <Line type="monotone" dataKey={dataKey} stroke={colors.primary} />
               <Tooltip />
-              {grid && <CartesianGrid stroke="#e0dfdf" strokeDasharray="5 5" />}
+              {grid && <CartesianGrid stroke={colors.border} strokeDasharray="5 5" />}
             </LineChart>
           </ResponsiveContainer>
         </>
@@ -54,11 +54,11 @@ function Chart({ title, data, dataKey, grid }: ChatProps) {
           <ChartTitle>{title}</ChartTitle>
           <ResponsiveContainer width="100%" aspect={4 / 1}>
             <LineChart data={data}>
-              <XAxis dataKey="name" stroke="#5550bd" />
-              <YAxis dataKey="sales" stroke="#5550bd" />
-              <Line type="monotone" dataKey={dataKey} stroke="#5550bd" />
+              <XAxis dataKey="name" stroke={colors.primary} />
+              <YAxis dataKey="sales" stroke={colors.primary} />
+              <Line type="monotone" dataKey={dataKey} stroke={colors.primary} />
               <Tooltip />
-              {grid && <CartesianGrid stroke="#e0dfdf" strokeDasharray="5 5" />}
+              {grid && <CartesianGrid stroke={colors.border} strokeDasharray="5 5" />}
             </LineChart>
           </ResponsiveContainer>
         </>

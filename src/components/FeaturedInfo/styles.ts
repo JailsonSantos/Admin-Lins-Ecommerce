@@ -16,11 +16,13 @@ export const FeaturedItem = styled.div`
   cursor: pointer;
   transition: 0.2s;
   border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme.textLight} ;
+  color: ${({ theme }) => theme.colors.textCard};
+  border: thin solid ${({ theme }) => theme.colors.border};
+  background-color: ${({ theme }) => theme.colors.backgroundDark};
 
   &:hover {
-    -webkit-box-shadow: 0px 0px 9px -4px #000000; 
-    box-shadow: 0px 0px 9px -4px #000000;
+    -webkit-box-shadow: 0px 0px 9px -4px ${({ theme }) => theme.colors.primary}; 
+    box-shadow: 0px 0px 9px -4px ${({ theme }) => theme.colors.primary};
   }
 `;
 
@@ -47,11 +49,11 @@ export const FeaturedMoneyRate = styled.span<FeaturedMoneyRateProps>`
   svg{
     font-size: 20px;
     margin-left: 5px;
-    color: ${({ negative, theme }) => negative ? theme.red : theme.green};
+    color: ${({ negative, theme }) => negative ? theme.colors.red : theme.colors.green};
   }
 `;
 
 export const FeaturedSub = styled.span`
   font-size: 15px;
-  color: ${({ theme }) => theme.shade}
+  color: ${({ theme }) => theme.colors.shade}
 `;

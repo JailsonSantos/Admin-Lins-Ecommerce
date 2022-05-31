@@ -1,3 +1,4 @@
+import { darken } from 'polished';
 import styled from 'styled-components';
 
 interface NavLinkContainerProps {
@@ -9,12 +10,12 @@ export const Container = styled.div`
   top: 50px;
   position: sticky;
   height: calc(100vh - 50px);
-  background-color: ${({ theme }) => theme.backgroundLight};
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 export const SidebarWrapper = styled.div`
   padding: 20px;
-  color: ${({ theme }) => theme.textHighlight};
+  color: ${({ theme }) => theme.colors.textHighlight};
 `;
 
 export const SidebarMenu = styled.div`
@@ -23,7 +24,7 @@ export const SidebarMenu = styled.div`
 
 export const Title = styled.h3`
   font-size: 13px;
-  color: ${({ theme }) => theme.shade};
+  color: ${({ theme }) => theme.colors.shade};
 `;
 
 export const SidebarList = styled.ul`
@@ -38,10 +39,11 @@ export const NavLinkContainer = styled.li<NavLinkContainerProps>`
     cursor: pointer;
     border-radius: 5px;
     align-items: center;
-    background-color: ${({ isActive, theme }) => isActive ? theme.selected : 'transparent'};
+    color: ${({ isActive, theme }) => isActive && theme.colors.text};
+    background-color: ${({ isActive, theme }) => isActive ? theme.colors.selected : 'transparent'};
 
     &:hover{
-      background-color: ${({ theme }) => theme.selected};
+      background-color: ${({ isActive, theme }) => !isActive && theme.colors.selectedHover};
     }
 
     svg{

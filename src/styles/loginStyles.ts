@@ -16,12 +16,13 @@ export const Wrapper = styled.div`
   width: 25%;
   padding: 20px;
   border-radius: 5px;
-  background-color: ${({ theme }) => theme.background};
+  background-color: ${({ theme }) => theme.colors.backgroundDark};
 `;
 
 export const Title = styled.h1`
-  font-weight: 300;
+  font-weight: 400;
   font-size: 1.5rem;
+  color: ${({ theme }) => theme.colors.textLight};
 `;
 
 export const Form = styled.form`
@@ -36,7 +37,9 @@ export const Input = styled.input`
   margin: 10px 0;
   min-width: 40%;
   border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme.shade};
+  color: ${({ theme }) => theme.colors.textLight};
+  border: 1px solid ${({ theme }) => theme.colors.shade};
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 export const Button = styled.button`
@@ -49,24 +52,25 @@ export const Button = styled.button`
   border-radius: 5px;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.text};
-  outline-color: ${({ theme }) => theme.primary}; 
-  background-color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.colors.text};
+  outline-color: ${({ theme }) => theme.colors.primary}; 
+  background-color: ${({ theme }) => theme.colors.primary};
 
   &:hover{
-    background-color: ${({ theme }) => darken(0.02, theme.primary)};
+    background-color: ${({ theme }) => darken(0.02, theme.colors.primary)};
   }
 `;
 
 export const Error = styled.span`
-  color: ${({ theme }) => theme.error};
+  color: ${({ theme }) => theme.colors.error};
 `;
 
 export const Link = styled.a`
   margin: 5px 0;
   cursor: pointer;
-  font-size: .75rem;
-  
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.textLight};
+
   &:hover{
     text-decoration: underline;
   }

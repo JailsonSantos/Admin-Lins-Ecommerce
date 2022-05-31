@@ -1,9 +1,54 @@
-import { darken } from "polished";
 import styled from "styled-components";
+import { darken } from "polished";
 
 export const Container = styled.div`
   flex: 4;
   padding: 0 20px;
+
+
+  .grid, span, p{
+    color: ${({ theme }) => theme.colors.textCard};
+  }
+  
+  div.MuiDataGrid-cell.MuiDataGrid-cell{
+    outline: none;
+  }
+  
+  .productList{
+    color: ${({ theme }) => theme.colors.textCard};
+    display: flex;
+    align-items: center;
+  }
+  .productImage{
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 50%;
+  }
+
+  .BtnEditProduct{
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin-right: 20px;
+    border-radius: 5px;
+    color: ${({ theme }) => theme.colors.text};
+    background-color: ${({ theme }) => theme.colors.successMedium};
+
+    &:hover {
+      background-color: ${({ theme }) => theme.colors.success};
+    }
+
+  }
+  .BtnDeleteProductt{
+    cursor: pointer;
+    color: ${({ theme }) => theme.colors.declinedMedium};
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.declined};
+    }
+  }
 `;
 
 export const ProductTitleContainer = styled.div`
@@ -22,11 +67,11 @@ export const ProductAddButton = styled.button`
   font-size: 14px;
   transition: 0.5s;
   border-radius: 5px;
-  color: ${({ theme }) => theme.text};
-  background-color: ${({ theme }) => theme.successMedium};
+  color: ${({ theme }) => theme.colors.text};
+  background-color: ${({ theme }) => theme.colors.primary};
 
   &:hover {
-    background-color: ${({ theme }) => theme.success}
+    background-color: ${({ theme }) => darken(0.05, theme.colors.primary)};
   }
 `;
 
@@ -48,12 +93,15 @@ export const ProductTopRight = styled.div`
   margin: 20px;
   transition: 0.2s;
   border-radius: 5px;
-  padding: 10px 15px 0; 
-  border: 1px solid ${({ theme }) => theme.textLight};
+  padding: 10px 15px 0;   
+
+  color: ${({ theme }) => theme.colors.textCard};
+  border: thin solid ${({ theme }) => theme.colors.border};
+  background-color: ${({ theme }) => theme.colors.backgroundDark};
 
   &:hover {
-    -webkit-box-shadow: 0px 0px 9px -4px #000000; 
-    box-shadow: 0px 0px 9px -4px #000000;    
+    -webkit-box-shadow: 0px 0px 9px -4px ${({ theme }) => theme.colors.primary}; 
+    box-shadow: 0px 0px 9px -4px ${({ theme }) => theme.colors.primary}; 
   }
 `;
 
@@ -98,11 +146,15 @@ export const ProductBottom = styled.div`
   padding: 10px 20px;
   transition: 0.2s;
   border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme.textLight};
+  
+
+  color: ${({ theme }) => theme.colors.textCard};
+  border: thin solid ${({ theme }) => theme.colors.border};
+  background-color: ${({ theme }) => theme.colors.backgroundDark};
 
   &:hover {
-    -webkit-box-shadow: 0px 0px 9px -4px #000000; 
-    box-shadow: 0px 0px 9px -4px #000000;    
+    -webkit-box-shadow: 0px 0px 9px -4px ${({ theme }) => theme.colors.primary}; 
+    box-shadow: 0px 0px 9px -4px ${({ theme }) => theme.colors.primary};   
   }
 `;
 
@@ -125,7 +177,7 @@ export const ProductUpdatedItem = styled.div`
 `;
 export const ProductLabel = styled.div`
   margin-bottom: 10px;
-  color: ${({ theme }) => theme.textHighlight};
+  color: ${({ theme }) => theme.colors.textHighlight};
 `;
 
 export const ProductInput = styled.input`
@@ -134,8 +186,9 @@ export const ProductInput = styled.input`
   border: none;
   outline: none;
   padding-left: 5px;
+  border-radius: 5px;
   margin-bottom: 10px;
-  border-bottom: 1px solid ${({ theme }) => theme.textLight};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.textLight};
 `;
 
 export const ProductSelect = styled.select`
@@ -143,7 +196,7 @@ export const ProductSelect = styled.select`
   outline: none;
   border-radius: 5px;
   margin-bottom: 10px;
-  border: 1px solid ${({ theme }) => theme.textLight};
+  border: 1px solid ${({ theme }) => theme.colors.textLight};
 
 `;
 
@@ -177,7 +230,7 @@ export const ProductUploadLabel = styled.label`
   &:hover {
     svg{ 
       border-radius: 50%;
-      border: 1px solid ${({ theme }) => theme.textLight};
+      border: 1px solid ${({ theme }) => theme.colors.textLight};
     }
   }
 `;
@@ -192,10 +245,10 @@ export const ProductUploadButton = styled.button`
   transition: 0.5s;
   font-weight: 600;
   border-radius: 5px;
-  color: ${({ theme }) => theme.text};
-  background-color: ${({ theme }) => theme.blue};
+  color: ${({ theme }) => theme.colors.text};
+  background-color: ${({ theme }) => theme.colors.primary};
 
   &:hover {
-    background-color: ${({ theme }) => darken(0.05, theme.blue)};
+    background-color: ${({ theme }) => darken(0.05, theme.colors.primary)};
   }
 `;

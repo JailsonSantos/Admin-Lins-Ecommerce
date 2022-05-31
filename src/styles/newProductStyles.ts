@@ -8,7 +8,9 @@ export const Container = styled.div`
   padding: 0 20px;
 `;
 
-export const NewProductTitle = styled.h2``;
+export const NewProductTitle = styled.h2`
+  padding-left: 20px;
+`;
 
 export const NewProductForm = styled.form`
   margin-top: 10px;
@@ -45,7 +47,7 @@ export const NewProductLabel = styled.label`
   margin: 5px 0;
   font-size: 14px;
   font-weight: 600;
-  color: ${({ theme }) => theme.textHighlight};
+  color: ${({ theme }) => theme.colors.textHighlight};
 
   svg{ 
     margin-right: 10px;
@@ -64,22 +66,23 @@ export const NewProductInput = styled.input`
   outline: none;
   padding: 10px;
   border-radius: 5px;
-  border-bottom: 1px solid ${({ theme }) => theme.textLight};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.textLight};
 `;
 
 export const NewProductSelect = styled.select`
   height: 40px;
   outline: none;
   border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme.textLight};
+  border: 1px solid ${({ theme }) => theme.colors.textLight};
 `;
 
 export const NewProductOption = styled.option``;
 
 export const NewProductButton = styled.button`
   width: 250px;
+  margin-left: 20px;
   border: none;
-  padding: 10px;
+  padding: 0px;
   display: flex;
   font-size: 1rem;
   margin-top: 20px;
@@ -88,10 +91,10 @@ export const NewProductButton = styled.button`
   border-radius: 5px;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.text};
-  background-color: ${({ theme }) => theme.blue};
+  color: ${({ theme }) => theme.colors.text};
+  background-color: ${({ theme }) => theme.colors.primary};
 
   &:hover {
-    background-color: ${({ theme }) => darken(0.05, theme.blue)};
+    background-color: ${({ theme }) => darken(0.05, theme.colors.primary)};
   }
 `;

@@ -11,11 +11,14 @@ export const Container = styled.div`
   padding: 20px;
   transition: 0.2s;
   border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme.textLight} ;
+
+  color: ${({ theme }) => theme.colors.textCard};
+  border: thin solid ${({ theme }) => theme.colors.border};
+  background-color: ${({ theme }) => theme.colors.backgroundDark};
 
   &:hover {
-    -webkit-box-shadow: 0px 0px 9px -4px #000000; 
-    box-shadow: 0px 0px 9px -4px #000000;
+    -webkit-box-shadow: 0px 0px 9px -4px ${({ theme }) => theme.colors.primary}; 
+    box-shadow: 0px 0px 9px -4px ${({ theme }) => theme.colors.primary};
   }
 `;
 
@@ -71,11 +74,11 @@ export const ButtonStatus = styled.button<ButtonStatusProps>`
   padding: 5px 10px;
   border-radius: 5px;
   
-  color: ${({ typeStatus, theme }) => typeStatus === "Aprovado" ? theme.success : typeStatus === 'Pendente' ? theme.pending : theme.declined};
-  background-color: ${({ typeStatus, theme }) => typeStatus === 'Aprovado' ? theme.successLight : typeStatus === 'Pendente' ? theme.pendingLight : theme.declinedLight};
+  color: ${({ typeStatus, theme }) => typeStatus === "Aprovado" ? theme.colors.success : typeStatus === 'Pendente' ? theme.colors.pending : theme.colors.declined};
+  background-color: ${({ typeStatus, theme }) => typeStatus === 'Aprovado' ? theme.colors.successLight : typeStatus === 'Pendente' ? theme.colors.pendingLight : theme.colors.declinedLight};
 
   &:hover {
-    background-color: ${({ typeStatus, theme }) => typeStatus === 'Aprovado' ? theme.successDark : typeStatus === 'Pendente' ? theme.pendingDark : theme.declinedDark};
+    background-color: ${({ typeStatus, theme }) => typeStatus === 'Aprovado' ? theme.colors.successDark : typeStatus === 'Pendente' ? theme.colors.pendingDark : theme.colors.declinedDark};
   }
 `;
 

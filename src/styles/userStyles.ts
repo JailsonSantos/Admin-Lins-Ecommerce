@@ -22,11 +22,11 @@ export const UserAddButton = styled.button`
   font-size: 14px;
   transition: 0.5s;
   border-radius: 5px;
-  color: ${({ theme }) => theme.text};
-  background-color: ${({ theme }) => theme.successMedium};
+  color: ${({ theme }) => theme.colors.text};
+  background-color: ${({ theme }) => theme.colors.successMedium};
 
   &:hover {
-    background-color: ${({ theme }) => theme.success}
+    background-color: ${({ theme }) => theme.colors.success}
   }
 `;
 
@@ -40,11 +40,14 @@ export const UserShow = styled.div`
   padding: 20px;
   transition: 0.2s;
   border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme.textLight};
+ 
+  color: ${({ theme }) => theme.colors.textCard};
+  border: thin solid ${({ theme }) => theme.colors.border};
+  background-color: ${({ theme }) => theme.colors.backgroundDark};
 
   &:hover {
-    -webkit-box-shadow: 0px 0px 9px -4px #000000; 
-    box-shadow: 0px 0px 9px -4px #000000;
+    -webkit-box-shadow: 0px 0px 9px -4px ${({ theme }) => theme.colors.primary}; 
+    box-shadow: 0px 0px 9px -4px ${({ theme }) => theme.colors.primary};
   }
 `;
 
@@ -54,11 +57,14 @@ export const UserUpdate = styled.div`
   transition: 0.2s;
   border-radius: 5px;
   margin-left: 20px;
-  border: 1px solid ${({ theme }) => theme.textLight};
+
+  color: ${({ theme }) => theme.colors.textCard};
+  border: thin solid ${({ theme }) => theme.colors.border};
+  background-color: ${({ theme }) => theme.colors.backgroundDark};
 
   &:hover {
-    -webkit-box-shadow: 0px 0px 9px -4px #000000; 
-    box-shadow: 0px 0px 9px -4px #000000;
+    -webkit-box-shadow: 0px 0px 9px -4px ${({ theme }) => theme.colors.primary}; 
+    box-shadow: 0px 0px 9px -4px ${({ theme }) => theme.colors.primary};
   }
 `;
 
@@ -96,7 +102,7 @@ export const UserShowTitle = styled.span`
   font-size: 14px;
   margin-left: 5px;
   font-weight: 600;
-  color: ${({ theme }) => theme.shade};
+  color: ${({ theme }) => theme.colors.shade};
 `;
 
 export const UserShowInfoTitle = styled.span`
@@ -107,7 +113,7 @@ export const UserShowInfo = styled.div`
   display: flex;
   margin: 20px 0;
   align-items: center;
-  color: ${({ theme }) => theme.textHighlight};
+  color: ${({ theme }) => theme.colors.textHighlight};
 `;
 
 export const UserUpdateTitle = styled.div`
@@ -140,7 +146,8 @@ export const UserUpdateInput = styled.input`
   border: none;
   outline: none;
   padding-left: 5px;
-  border-bottom: 1px solid ${({ theme }) => theme.textLight};
+  border-radius: 5px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.textLight};
 `;
 
 export const UserUpdateRight = styled.div`
@@ -173,7 +180,7 @@ export const UserUpdateLabel = styled.label`
   &:hover {
     svg{ 
       border-radius: 50%;
-      border: 1px solid ${({ theme }) => theme.textLight};
+      border: 1px solid ${({ theme }) => theme.colors.textLight};
     }
   }
 `;
@@ -188,10 +195,10 @@ export const UserUploadButton = styled.button`
   transition: 0.5s;
   font-weight: 600;
   border-radius: 5px;
-  color: ${({ theme }) => theme.text};
-  background-color: ${({ theme }) => theme.blue};
+  color: ${({ theme }) => theme.colors.text};
+  background-color: ${({ theme }) => theme.colors.primary};
 
   &:hover {
-    background-color: ${({ theme }) => darken(0.05, theme.blue)};
+    background-color: ${({ theme }) => darken(0.05, theme.colors.primary)};
   }
 `;

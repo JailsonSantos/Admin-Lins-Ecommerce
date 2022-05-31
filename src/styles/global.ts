@@ -12,17 +12,17 @@ export default createGlobalStyle`
       height: 5px;
     }
     ::-webkit-scrollbar-thumb {
-      background: ${({ theme }) => theme.primary};
+      background: ${({ theme }) => theme.colors.primary};
       border-radius: 10px;
     }
     ::-webkit-scrollbar-track{
-      background: ${({ theme }) => lighten(0.4, theme.primary)};
+      background: ${({ theme }) => lighten(0.4, theme.colors.primary)};
     }
   }
 
   body {
     font: 400 1rem 'Poppins', sans-serif;
-    background: ${props => props.theme.background};
+    background: ${({ theme }) => theme.colors.background};
   }
   
   img {

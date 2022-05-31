@@ -8,11 +8,14 @@ export const Container = styled.div`
 
   transition: 0.2s;
   border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme.textLight} ;
+
+  color: ${({ theme }) => theme.colors.textCard};
+  border: thin solid ${({ theme }) => theme.colors.border};
+  background-color: ${({ theme }) => theme.colors.backgroundDark};
 
   &:hover {
-    -webkit-box-shadow: 0px 0px 9px -4px #000000; 
-    box-shadow: 0px 0px 9px -4px #000000;
+    -webkit-box-shadow: 0px 0px 9px -4px ${({ theme }) => theme.colors.primary}; 
+    box-shadow: 0px 0px 9px -4px ${({ theme }) => theme.colors.primary};
   }
 `;
 
@@ -65,19 +68,20 @@ export const WidgetButton = styled.button`
   padding: 10px;
   display: flex;
   align-items: center;
-  border-radius: 10px;
-  color: ${({ theme }) => theme.textHighlight};
-  background-color: ${({ theme }) => theme.buttonLight};
+  border-radius: 20px;
+
+  color: ${({ theme }) => theme.colors.text};
+  outline-color: ${({ theme }) => theme.colors.primary}; 
+  background-color: ${({ theme }) => theme.colors.selectedHover};
   transition: 0.2s;
+
+  &:hover{
+    background-color: ${({ theme }) => theme.colors.selected};
+  }
 
   a{ 
     display: flex;
     align-items: center;
-  }
-
-  &:hover {
-    color: ${({ theme }) => darken(0.2, theme.textHighlight)};
-    background-color: ${({ theme }) => darken(0.02, theme.buttonLight)};
   }
 
   svg{

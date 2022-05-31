@@ -1,0 +1,53 @@
+package.json
+
+-----------------
+
+{
+  "name": "api-lins-ecommerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.ts",
+  "engines": {
+    "node": "16.x"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.1.1",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/nodemon": "^1.19.1",
+    "@types/stripe": "^8.0.417",
+    "@types/stripe-checkout": "^1.0.4",
+    "ts-node": "^10.7.0"
+  },
+  "scripts": {
+    "start": "npx tsc -w",
+    "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node ./src/server.ts\"",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JailsonSantos/Api-Lins-Ecommerce.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JailsonSantos/Api-Lins-Ecommerce/issues"
+  },
+  "homepage": "https://github.com/JailsonSantos/Api-Lins-Ecommerce#readme",
+  "dependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^17.0.24",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "6.0.5",
+    "nodemon": "^2.0.15",
+    "react-stripe-checkout": "^2.6.3",
+    "stripe": "^8.218.0",
+    "typescript": "^4.6.3"
+  }
+}

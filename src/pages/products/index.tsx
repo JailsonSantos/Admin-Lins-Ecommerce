@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Link from 'next/link';
 
 // Styles Global
@@ -14,15 +14,11 @@ import {
   ProductTitleContainer,
   ProductTitle,
   ProductAddButton,
-
 } from '../../styles/productsStyles';
 
 // DataGrid Users
 import { DeleteOutline } from '@material-ui/icons';
 import { DataGrid, GridColDef } from "@material-ui/data-grid";
-
-// Fictional Data
-import { productRows } from '../../fictionalData';
 
 //Components
 import Topbar from '../../components/Topbar';
@@ -45,9 +41,9 @@ export default function Products() {
   }
 
   const columns: GridColDef[] = [
-    { field: '_id', headerName: 'ID', width: 220 },
+    { field: '_id', headerName: 'ID', width: 260 },
     {
-      field: 'product', headerName: 'Produto', width: 200,
+      field: 'product', headerName: 'Produto', width: 220,
       renderCell: (params) => {
         return (
           <div className="productList">
@@ -105,6 +101,7 @@ export default function Products() {
                     getRowId={(row) => row._id}
                     rowsPerPageOptions={[5]}
                     checkboxSelection
+                    className="grid"
                   />
                 </Container>
               </WidgetContainer>

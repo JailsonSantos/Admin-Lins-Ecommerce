@@ -27,7 +27,7 @@ export const NewUserLabel = styled.label`
   font-size: 14px;
   font-weight: 600;
   margin: 10px 0;
-  color: ${({ theme }) => theme.textHighlight};
+  color: ${({ theme }) => theme.colors.textHighlight};
 
 `;
 
@@ -37,7 +37,7 @@ export const NewUserInput = styled.input`
   outline: none;
   padding: 10px;
   border-radius: 5px;
-  border-bottom: 1px solid ${({ theme }) => theme.textLight};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.textLight};
 `;
 
 export const NewUserGender = styled.div`
@@ -49,7 +49,7 @@ export const NewUserLabelGender = styled.label`
   margin: 0 10px;
   font-size: 18px;
   cursor: pointer;
-  color: ${({ theme }) => theme.textHighlight};
+  color: ${({ theme }) => theme.colors.textHighlight};
 `;
 
 export const NewUserInputRadio = styled.input`
@@ -59,14 +59,14 @@ export const NewUserInputRadio = styled.input`
   padding: 10px;
   cursor: pointer;
   border-radius: 5px;
-  border-bottom: 1px solid ${({ theme }) => theme.textLight};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.textLight};
 `;
 
 export const NewUserSelect = styled.select`
   height: 40px;
   outline: none;
   border-radius: 5px;
-  border: 1px solid ${({ theme }) => theme.textLight};
+  border: 1px solid ${({ theme }) => theme.colors.textLight};
 `;
 
 export const NewUserOption = styled.option``;
@@ -94,10 +94,12 @@ export const NewUserButton = styled.button`
   transition: 0.5s;
   font-weight: 600;
   border-radius: 5px;
-  color: ${({ theme }) => theme.text};
-  background-color: ${({ theme }) => theme.blue};
+  
+  color: ${({ theme }) => theme.colors.text};
+  background-color: ${({ theme }) => theme.colors.primary};
+
 
   &:hover {
-    background-color: ${({ theme }) => darken(0.05, theme.blue)};
+    background-color: ${({ theme }) => darken(0.05, theme.colors.primary)};
   }
 `;

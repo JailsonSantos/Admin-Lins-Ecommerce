@@ -54,7 +54,7 @@ export default function Login() {
       {!loading &&
         <Container>
           <Wrapper>
-            <Title>SIGN IN</Title>
+            <Title>LOGIN</Title>
             <Form className="form" onSubmit={(event) => handleLogin(event)}>
               <Input type="text" placeholder="Username" onChange={(event) => setUserName(event.target.value)} />
               <Input type="password" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
@@ -65,8 +65,8 @@ export default function Login() {
 
               {error && <Error>Wrong credentials!</Error>}
 
-              <Link>DO NOT YOU REMEMBER THE PASSWORD?</Link>
-              <Link>CREATE A NEW ACCOUNT</Link>
+              <Link>Esqueceu sua senha?</Link>
+              <Link>Crie uma nova conta</Link>
             </Form>
           </Wrapper>
         </Container >

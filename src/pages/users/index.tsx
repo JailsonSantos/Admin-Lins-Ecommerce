@@ -2,7 +2,8 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { DeleteOutline } from '@material-ui/icons';
-import { DataGrid, GridColDef } from "@material-ui/data-grid";
+
+import { DataGrid, GridColDef, ptBR } from "@material-ui/data-grid";
 
 // Styles
 import {
@@ -35,12 +36,8 @@ interface UsersProps {
   img: string;
 }
 
-import { useRouter } from "next/router";
-
-
 export default function Users() {
 
-  const router = useRouter();
   const [users, setUsers] = useState<UsersProps[]>([]);
   const [userDelete, setUserDelete] = useState(false);
 
@@ -121,6 +118,8 @@ export default function Users() {
                 getRowId={(row) => row._id}
                 rowsPerPageOptions={[5]}
                 checkboxSelection
+                className="grid"
+              // localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
               />
             </Container>
           </WidgetContainer>
