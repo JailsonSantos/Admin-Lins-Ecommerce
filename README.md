@@ -42,7 +42,7 @@
 
 <h3 align="left" id="layout">Versao Web</h3>
 
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/11697713/171436451-37c2b949-d576-416b-9c39-df7b4d4e5644.gif)
+![ezgif com-gif-maker (1)](https://user-images.githubusercontent.com/11697713/171442169-9e3dd09d-8df5-4db7-860a-1d7fa2361f1f.gif)
 
 <h3 align="left" id="tecnologias">🛠 Tecnologias</h3>
 <p align="justify">As seguintes Tecnologias e APIS que foram usadas na construção do projeto</p>
