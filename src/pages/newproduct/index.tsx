@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 // Styles Global
 import {
@@ -52,32 +52,47 @@ export default function NewProduct() {
   const [categories, setCategories] = useState([''])
   const [color, setColors] = useState(['']);
   const [size, setSizes] = useState(['']);
+
+  const [categoriesFormated, setCategoriesFormated] = useState([''])
+  const [colorFormated, setColorsFormated] = useState(['']);
+  const [sizeFormated, setSizesFormated] = useState(['']);
+
   const [price, setPrice] = useState('');
   const [file, setFile] = useState<File>({} as File);
   const [inStock, setInStock] = useState("true");
 
-  const handleChangeCategories = (event: any) => {
-    setCategories(event.target.value.split(','));
+  /*   function capitalizeFirst(str: string) {
+      const subst = str.toLowerCase().replace(/(?:^|\s)\S/g, function (a) {
+        return a.toUpperCase();
+      });
+  
+      console.log(subst)
+  
+      return subst;
+  
+    }
+   */
+
+  const handleChangeCategories = (event: ChangeEvent<HTMLInputElement>) => {
+    setCategories(event.target.value.split(',').map(e => e.trim()));
+    setCategoriesFormated(event.target.value.split(','));
   }
 
-  const handleChangeColors = (event: any) => {
-    setColors(event.target.value.split(','));
+  const handleChangeColors = (event: ChangeEvent<HTMLInputElement>) => {
+    setColors(event.target.value.split(',').map(e => e.trim()));
+    setColorsFormated(event.target.value.split(','));
   }
 
-  const handleChangeSizes = (event: any) => {
-    setSizes(event.target.value.split(','));
+  const handleChangeSizes = (event: ChangeEvent<HTMLInputElement>) => {
+    setSizes(event.target.value.split(',').map(e => e.trim()));
+    setSizesFormated(event.target.value.split(','));
   }
 
   const handleUploadImage = function (event: React.ChangeEvent<HTMLInputElement>) {
     const fileList = event.target.files;
-
     if (!fileList) return;
-
     setFile(fileList[0]);
-
   };
-
-  console.log(file);
 
   const handleSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -271,7 +286,7 @@ export default function NewProduct() {
                     <NewProductLabel>Categoria</NewProductLabel>
                     <NewProductInput
                       name="categories"
-                      value={categories}
+                      value={categoriesFormated}
                       type="text"
                       placeholder="Masculino, Feminio ou Infantil"
                       onChange={handleChangeCategories} />
@@ -281,9 +296,9 @@ export default function NewProduct() {
                     <NewProductLabel>Cores</NewProductLabel>
                     <NewProductInput
                       name="color"
-                      value={color}
+                      value={colorFormated}
                       type="text"
-                      placeholder="Azul, verde, outras..."
+                      placeholder="Cores em inglês, Ex: blue, red..."
                       onChange={handleChangeColors} />
                   </NewProductItem>
 
@@ -291,7 +306,7 @@ export default function NewProduct() {
                     <NewProductLabel>Tamanhos</NewProductLabel>
                     <NewProductInput
                       name="size"
-                      value={size}
+                      value={sizeFormated}
                       type="text"
                       placeholder="P, M, G e outras..."
                       onChange={handleChangeSizes} />

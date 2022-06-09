@@ -46,7 +46,7 @@ import Chart from '../../../components/Chart';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react';
 import { userRequest } from '../../../services/api';
 
 // Firebase Upload Files
@@ -82,11 +82,11 @@ export default function Product() {
   const [inputs, setInputs] = useState({ ...product });
 
 
-  const handleChangeInputs = (event: { target: { name: any; value: any; }; }) => {
+  const handleChangeInputs = (event: { target: { name: string; value: string; }; }) => {
     if (event.target.name === 'categories' || event.target.name === 'color' || event.target.name === 'size') {
 
       setInputs((prev) => {
-        return { ...prev, [event.target.name]: event.target.value.split(',') };
+        return { ...prev, [event.target.name]: event.target.value.split(',').map(e => e.trim()) };
       });
 
     } else {

@@ -63,7 +63,7 @@ export default function Login() {
                 {isFetching ? <ReactLoading type="spokes" height="16px" width="16px" color="#fff" /> : 'LOGIN'}
               </Button>
 
-              {error && <Error>Wrong credentials!</Error>}
+              {error && <Error>Username ou Senha Inválidos!</Error>}
 
               <Link>Esqueceu sua senha?</Link>
               <Link>Crie uma nova conta</Link>

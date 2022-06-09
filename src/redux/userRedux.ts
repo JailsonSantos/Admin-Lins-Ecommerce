@@ -51,9 +51,9 @@ export const userSlice = createSlice({
     logoutStart: (state) => {
       state.isFetching = true;
     },
-    logoutSuccess: (state) => {
+    logoutSuccess: (state, action) => {
       state.isFetching = false;
-      state.currentUser = state.currentUser;
+      state.currentUser = action.payload;
       state.error = false;
     },
     logoutFailure: (state) => {

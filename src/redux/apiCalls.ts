@@ -60,7 +60,18 @@ export const logout = async (dispatch: ((arg0: { payload: undefined; type: strin
     destroyCookie(null, 'TOKEN', TOKEN);
     destroyCookie(null, 'ADMIN', ADMIN);
 
-    dispatch(logoutSuccess())
+    const userCurrent = {
+      _id: '',
+      username: '',
+      email: '',
+      img: '',
+      isAdmin: false,
+      accessToken: '',
+      createdAt: '',
+      updatedAt: '',
+    }
+
+    dispatch(logoutSuccess(userCurrent))
 
     window.location.href = '/login';
 
